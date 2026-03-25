@@ -19,10 +19,11 @@ def register():
 
 @app.route('/peers', methods=['GET'])
 def get_peers():
+    global peers
+    
     current_time = time.time()
     active_peers = [peer for peer, last_seen in peers.items() if current_time - last_seen < 300]
     
-    global peers
     peers = {peer: peers[peer] for peer in active_peers}
 
     return jsonify({"peers": active_peers}), 200
